@@ -44,3 +44,7 @@ body {
 .hero.is-primary a.nav-item:hover {
   text-decoration: underline;
 }
+
+.recently-played-list li + li {
+  margin-top: 1em;
+}
