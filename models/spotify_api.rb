@@ -18,8 +18,16 @@ class SpotifyApi < Fetcher
 
     return unless json
 
-    json['items'].map do |item|
-      SpotifyTrack.new(item['track'].merge(item.slice('played_at')))
+    basic_track_data = json['items'].map do |item|
+      [item['played_at'], item['track']['id']]
+    end.to_h
+
+    track_ids = basic_track_data.values.uniq
+    full_track_data = get_track_info_for(track_ids)
+
+    basic_track_data.map do |played_at, id|
+      data = full_track_data[id].merge('played_at' => played_at)
+      SpotifyTrack.new(data)
     end
   end
 
@@ -54,8 +62,45 @@ class SpotifyApi < Fetcher
 
   private
 
+  # https://developer.spotify.com/web-api/get-several-tracks/
+  def get_track_info_for(track_ids)
+    chunk_size = 50
+
+    track_data = if track_ids.size <= chunk_size
+      track_info_for_ids(track_ids)
+    else
+      batches = []
+      i = 0
+      while i < track_ids.size
+        batches.push(track_ids[i, i + chunk_size])
+        i += chunk_size
+      end
+
+      track_info_for_batch(batches, 0, [])
+    end
+
+    track_data.map { |hash| [hash['id'], hash] }.to_h
+  end
+
   def get_headers
     { 'Authorization' => "Bearer #{token}" }
+  end
+
+  def track_info_for_batch(batches, index, prev_tracks)
+    tracks = track_info_for_ids(batches[index])
+    all_tracks = prev_tracks.concat(tracks)
+
+    if index < batches.size - 1
+      track_info_for_batch(batches, index + 1, all_tracks)
+    else
+      all_tracks
+    end
+  end
+
+  def track_info_for_ids(ids)
+    id_str = ids.join(',')
+    json = get("/tracks/?ids=#{id_str}")
+    json['tracks']
   end
 
   def audio_features_for_batch(batches, index, prev_features)
