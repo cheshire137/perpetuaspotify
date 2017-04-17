@@ -31,6 +31,24 @@ class SpotifyApi < Fetcher
     end
   end
 
+  # https://developer.spotify.com/web-api/get-recommendations/
+  def get_recommendations(limit: 20, track_ids: [], target_features: {})
+    params = { limit: limit }
+    if track_ids.size > 0
+      params[:seed_tracks] = track_ids.join(',')
+    end
+    target_features.each do |feature, value|
+      params["target_#{feature}"] = value
+    end
+    param_str = params.map { |key, value| "#{key}=#{value}" }.join('&')
+
+    json = get("/recommendations?#{param_str}")
+
+    return unless json
+
+    json['tracks']
+  end
+
   def get_audio_features_for(track_ids)
     chunk_size = 100
 
