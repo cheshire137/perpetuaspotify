@@ -39,7 +39,7 @@ class SpotifyAudioFeatures
       @features_hash['Speechiness'] = percent_str(@speechiness)
     end
     @features_hash['Tempo'] = "#{@tempo} bpm"
-    @features_hash['Valence'] = percent_str(@valence)
+    @features_hash['Valence'] = interpreted_valence
     @features_hash['Time signature'] = @time_signature
     @features_hash['Duration'] = formatted_duration
   end
@@ -73,6 +73,20 @@ class SpotifyAudioFeatures
   end
 
   private
+
+  def interpreted_valence
+    if valence < 20
+      'Very negative'
+    elsif valence < 40
+      'Negative'
+    elsif valence < 60
+      'Neutral'
+    elsif valence < 80
+      'Positive'
+    else
+      'Very positive'
+    end
+  end
 
   def percent_str(value)
     "#{value}%"
