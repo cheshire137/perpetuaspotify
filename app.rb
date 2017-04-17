@@ -4,6 +4,7 @@ require 'dotenv/load'
 
 require_relative 'models/spotify_auth_api'
 require_relative 'models/spotify_api'
+require_relative 'models/spotify_trackset'
 require_relative 'models/user'
 
 def escape_url(url)
@@ -60,22 +61,13 @@ get '/user/:id-:user_name' do
     return
   end
 
-  api = SpotifyApi.new(@user.spotify_access_token)
-  @recently_played = begin
-    api.get_recently_played
-  rescue Fetcher::Unauthorized
-    if @user.update_spotify_tokens
-      api = SpotifyApi.new(@user.spotify_access_token)
-      api.get_recently_played
-    else
-      status 400
-      return 'Failed to get recent Spotify tracks.'
-    end
-  end
+  trackset = SpotifyTrackset.new(@user)
 
-  features_by_id = api.get_audio_features_for(@recently_played.map(&:id))
-  @recently_played.each do |track|
-    track.audio_features = features_by_id[track.id]
+  @recently_played = begin
+    trackset.fetch
+  rescue SpotifyTrackset::Error
+    status 400
+    return 'Failed to get recent Spotify tracks.'
   end
 
   erb :user

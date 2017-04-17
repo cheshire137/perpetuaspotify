@@ -8,9 +8,7 @@ class SpotifyTrack
   def initialize(hash)
     @id = hash['id']
     @name = hash['name']
-    @artists = hash['artists'].map do |artist|
-      SpotifyArtist.new(artist)
-    end
+    @artists = hash['artists'].map { |artist| SpotifyArtist.new(artist) }
     @url = hash['external_urls']['spotify']
     @played_at = DateTime.parse(hash['played_at'])
 
