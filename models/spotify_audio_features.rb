@@ -8,15 +8,15 @@ class SpotifyAudioFeatures
 
   def initialize(hash)
     @track_id = hash['id']
-    @acousticness = percent(hash['acousticness'])
-    @danceability = percent(hash['danceability'])
-    @energy = percent(hash['energy'])
-    @instrumentalness = percent(hash['instrumentalness'])
+    @acousticness = hash['acousticness']
+    @danceability = hash['danceability']
+    @energy = hash['energy']
+    @instrumentalness = hash['instrumentalness']
     @loudness = hash['loudness'] # between -60 and 0 db
-    @mode = hash['mode'] == 1 ? 'major' : 'minor'
-    @speechiness = percent(hash['speechiness'])
+    @mode = hash['mode']
+    @speechiness = hash['speechiness']
     @tempo = hash['tempo'] # bpm
-    @valence = percent(hash['valence'])
+    @valence = hash['valence']
     @time_signature = hash['time_signature']
     @duration_ms = hash['duration_ms']
 
@@ -34,7 +34,7 @@ class SpotifyAudioFeatures
       @features_hash['Instrumentalness'] = percent_str(@instrumentalness)
     end
     @features_hash['Loudness'] = @loudness
-    @features_hash['Mode'] = @mode
+    @features_hash['Mode'] = @mode == 1 ? 'major' : 'minor'
     if @speechiness > 50
       @features_hash['Speechiness'] = percent_str(@speechiness)
     end
@@ -89,7 +89,7 @@ class SpotifyAudioFeatures
   end
 
   def percent_str(value)
-    "#{value}%"
+    "#{percent(value)}%"
   end
 
   def percent(value)
