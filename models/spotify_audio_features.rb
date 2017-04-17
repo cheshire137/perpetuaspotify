@@ -20,19 +20,28 @@ class SpotifyAudioFeatures
     @time_signature = hash['time_signature']
     @duration_ms = hash['duration_ms']
 
-    @features_hash = {
-      'Acousticness' => percent_str(@acousticness),
-      'Danceability' => percent_str(@danceability),
-      'Energy' => percent_str(@energy),
-      'Instrumentalness' => percent_str(@instrumentalness),
-      'Loudness' => @loudness,
-      'Mode' => @mode,
-      'Speechiness' => percent_str(@speechiness),
-      'Tempo' => "#{@tempo} bpm",
-      'Valence' => percent_str(@valence),
-      'Time signature' => @time_signature,
-      'Duration' => formatted_duration
-    }
+    @features_hash = {}
+    if @acousticness > 50
+      @features_hash['Acousticness'] = percent_str(@acousticness)
+    end
+    if @danceability > 50
+      @features_hash['Danceability'] = percent_str(@danceability)
+    end
+    if @energy > 50
+      @features_hash['Energy'] = percent_str(@energy)
+    end
+    if @instrumentalness > 50
+      @features_hash['Instrumentalness'] = percent_str(@instrumentalness)
+    end
+    @features_hash['Loudness'] = @loudness
+    @features_hash['Mode'] = @mode
+    if @speechiness > 50
+      @features_hash['Speechiness'] = percent_str(@speechiness)
+    end
+    @features_hash['Tempo'] = "#{@tempo} bpm"
+    @features_hash['Valence'] = percent_str(@valence)
+    @features_hash['Time signature'] = @time_signature
+    @features_hash['Duration'] = formatted_duration
   end
 
   def each(&block)
