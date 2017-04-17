@@ -12,7 +12,11 @@ class SpotifyTrack
     @played_at = DateTime.parse(hash['played_at'])
   end
 
-  def artist_names
-    artists.map(&:name).join(', ')
+  def artist_count
+    @artist_count ||= artists.size
+  end
+
+  def formatted_played_at
+    played_at.strftime('%b %-d, %Y %l:%M %P')
   end
 end
