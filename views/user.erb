@@ -1,1 +1,30 @@
-<%= @user.user_name %>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <nav class="nav">
+        <div class="nav-left">
+          <a class="title" href="/user/<%= @user.to_param %>">
+            Perpetuaspotify
+          </a>
+        </div>
+        <div class="nav-right nav-menu">
+          <a href="/logout" class="nav-item">
+            Log out <%= @user.user_name %>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container content">
+    <ul>
+      <% @recently_played.each do |track| %>
+        <li>
+          <%= track.name %> by <%= track.artist_names %><br>
+          <%= track.played_at %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>

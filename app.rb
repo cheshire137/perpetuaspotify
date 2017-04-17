@@ -60,6 +60,19 @@ get '/user/:id-:user_name' do
     return
   end
 
+  api = SpotifyApi.new(@user.spotify_access_token)
+  @recently_played = begin
+    api.get_recently_played
+  rescue Fetcher::Unauthorized
+    if @user.update_spotify_tokens
+      api = SpotifyApi.new(@user.spotify_access_token)
+      api.get_recently_played
+    else
+      status 400
+      return 'Failed to get recent Spotify tracks.'
+    end
+  end
+
   erb :user
 end
 
