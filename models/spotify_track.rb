@@ -10,7 +10,9 @@ class SpotifyTrack
     @name = hash['name']
     @artists = hash['artists'].map { |artist| SpotifyArtist.new(artist) }
     @url = hash['external_urls']['spotify']
-    @played_at = DateTime.parse(hash['played_at'])
+    @played_at = if date_str = hash['played_at']
+      DateTime.parse(date_str)
+    end
 
     image = hash['album']['images'].detect { |img| img['width'] <= 75 }
     if image
@@ -25,6 +27,8 @@ class SpotifyTrack
   end
 
   def formatted_played_at
-    played_at.strftime('%b %-d, %Y %l:%M %P')
+    if played_at
+      played_at.strftime('%b %-d, %Y %l:%M %P')
+    end
   end
 end

@@ -44,7 +44,6 @@ class Fetcher
     yield req if block_given?
 
     res = http.request(req)
-
     if res.kind_of? Net::HTTPSuccess
       JSON.parse(res.body)
     end

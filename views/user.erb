@@ -19,9 +19,20 @@
 <section class="section">
   <div class="container">
     <div class="columns">
-      <div class="column is-half">
-        <ul class="recently-played-list">
+      <div class="column">
+        <h2 class="subtitle">Recently Played</h2>
+        <ul class="recently-played-list tracks-list">
           <% @tracks.each do |track| %>
+            <li>
+              <%= erb :track, locals: { track: track } %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="column">
+        <h2 class="subtitle">Playlist</h2>
+        <ul class="recommendations-list tracks-list">
+          <% @recommendations.each do |track| %>
             <li>
               <%= erb :track, locals: { track: track } %>
             </li>

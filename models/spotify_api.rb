@@ -46,7 +46,7 @@ class SpotifyApi < Fetcher
 
     return unless json
 
-    json['tracks']
+    json['tracks'].map { |data| SpotifyTrack.new(data) }
   end
 
   def get_audio_features_for(track_ids)

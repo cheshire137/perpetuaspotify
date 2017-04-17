@@ -63,12 +63,14 @@ get '/user/:id-:user_name' do
 
   trackset = SpotifyTrackset.new(@user)
 
-  @recently_played = begin
-    trackset.fetch
+  @tracks = begin
+    trackset.tracks
   rescue SpotifyTrackset::Error
     status 400
     return 'Failed to get recent Spotify tracks.'
   end
+
+  @recommendations = trackset.recommendations
 
   erb :user
 end
