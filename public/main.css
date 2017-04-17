@@ -45,6 +45,25 @@ body {
   text-decoration: underline;
 }
 
-.recently-played-list li + li {
+.recently-played-list > li + li {
   margin-top: 1em;
+}
+
+.content ul.audio-features-list {
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 13px;
+}
+
+.content ul.audio-features-list li {
+  display: inline-block;
+}
+
+.content ul.audio-features-list li + li {
+  margin-top: 0;
+}
+
+.content ul.audio-features-list li + li:before {
+  content: "\b7\a0";
 }

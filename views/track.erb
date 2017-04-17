@@ -1,0 +1,26 @@
+<div class="box">
+  <article class="media">
+    <% if track.image_url %>
+      <div class="media-left">
+        <figure class="image">
+          <img src="<%= track.image_url %>" alt="" width="<%= track.image_width %>" height="<%= track.image_height %>">
+        </figure>
+      </div>
+    <% end %>
+    <div class="media-content content">
+      <strong>
+        <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer"><%= track.name %></a>
+        by
+        <% track.artists.each_with_index do |artist, i| %>
+          <a href="<%= artist.url %>" target="_blank" rel="noopener noreferrer"><%= artist.name %></a><%= ',' if i < track.artist_count - 1 %>
+        <% end %>
+      </strong>
+      <small><%= track.formatted_played_at %></small><br>
+      <ul class="audio-features-list">
+        <% track.audio_features.each do |feature, value| %>
+          <li><%= feature %>: <%= value %></li>
+        <% end %>
+      </ul>
+    </div>
+  </article>
+</div>
