@@ -27,6 +27,10 @@
             <a href="<%= artist.url %>" target="_blank" rel="noopener noreferrer"><%= artist.name %></a><%= ',' if i < track.artist_count - 1 %>
           <% end %>
           <br><%= track.formatted_played_at %>
+          <br>
+          <% track.audio_features.each do |feature, value| %>
+            <%= feature %>: <%= value %> &middot;
+          <% end %>
         </li>
       <% end %>
     </ul>

@@ -73,6 +73,11 @@ get '/user/:id-:user_name' do
     end
   end
 
+  features_by_id = api.get_audio_features_for(@recently_played.map(&:id))
+  @recently_played.each do |track|
+    track.audio_features = features_by_id[track.id]
+  end
+
   erb :user
 end
 

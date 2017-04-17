@@ -1,9 +1,11 @@
 require_relative 'spotify_artist'
 
 class SpotifyTrack
-  attr_reader :name, :artists, :url, :played_at
+  attr_reader :name, :artists, :url, :played_at, :id
+  attr_accessor :audio_features
 
   def initialize(hash)
+    @id = hash['id']
     @name = hash['name']
     @artists = hash['artists'].map do |artist|
       SpotifyArtist.new(artist)
