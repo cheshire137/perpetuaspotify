@@ -30,7 +30,10 @@
         </ul>
       </div>
       <div class="column">
-        <h2 class="subtitle">Playlist</h2>
+        <h2 class="subtitle">
+          Recommended Tracks &mdash;
+          <a href="#create-playlist-modal" class="js-trigger-modal">Create Playlist</a>
+        </h2>
         <ul class="recommendations-list tracks-list">
           <% @recommendations.each do |track| %>
             <li>
@@ -38,6 +41,19 @@
             </li>
           <% end %>
         </ul>
+        <div class="modal" id="create-playlist-modal">
+          <div class="modal-background"></div>
+          <div class="modal-content">
+            <ol>
+              <% @recommendations.each do |track| %>
+                <li>
+                  <%= erb :track, locals: { track: track } %>
+                </li>
+              <% end %>
+            </ol>
+          </div>
+          <button class="modal-close"></button>
+        </div>
       </div>
     </div>
   </div>
