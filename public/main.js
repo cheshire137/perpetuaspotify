@@ -1,3 +1,22 @@
+function resizeOpenModal() {
+  const openModal = document.querySelector('.modal.is-active')
+  if (!openModal) {
+    return
+  }
+
+  const modalBody = openModal.querySelector('.modal-card-body')
+  if (modalBody) {
+    const rect = modalBody.getBoundingClientRect()
+    let height = window.innerHeight - rect.top - 20
+    const modalFoot = openModal.querySelector('.modal-card-foot')
+    if (modalFoot) {
+      const footRect = modalFoot.getBoundingClientRect()
+      height -= footRect.height
+    }
+    modalBody.style.maxHeight = `${height}px`
+  }
+}
+
 function openModal(event) {
   event.preventDefault()
 
@@ -9,6 +28,8 @@ function openModal(event) {
   if (focusTarget) {
     focusTarget.focus()
   }
+
+  resizeOpenModal()
 }
 
 function closeModal(event) {
@@ -128,8 +149,17 @@ function setUpSubmitButtons(container) {
   }
 }
 
+function resizeModalOnWindowResize() {
+  if (!document.querySelector('.modal')) {
+    return
+  }
+  window.addEventListener('resize', resizeOpenModal)
+}
+
 closeModalOnEscape()
+resizeModalOnWindowResize()
 setUpNotificationDismissals()
+
 setUpModals(document)
 setUpTrackInfo(document)
 setUpRemoteForms(document)

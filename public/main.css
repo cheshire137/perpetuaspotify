@@ -98,12 +98,14 @@ body {
 }
 
 .content ol.playlist-track-list {
-  overflow: auto;
   list-style: none;
-  max-height: 350px;
   margin-left: 0;
   margin-right: 0;
   padding-right: 2em;
+}
+
+.modal .modal-card-body {
+  overflow: auto;
 }
 
 .hero-body {
