@@ -296,3 +296,8 @@ input[type="range"]:focus::-ms-fill-upper {
 .feature-range-max {
   margin-left: 5px;
 }
+
+.button .fa {
+  font-size: inherit;
+  margin-right: 5px;
+}

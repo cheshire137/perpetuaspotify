@@ -1,16 +1,18 @@
 <h2 class="subtitle clearfix">
   <% if @recommendations.size > 0 %>
-    <a href="#create-playlist-modal" class="button pull-right is-info js-trigger-modal">
-      <% if @user.spotify_playlist_id %>
-        Replace Playlist
-      <% else %>
-        Create Playlist
+    <form action="/playlists" method="POST">
+      <% @recommendations.each do |track| %>
+        <input type="hidden" name="track_uris[]" value="<%= track.uri %>">
       <% end %>
-    </a>
+      <button type="submit" class="button pull-right is-info js-trigger-modal">
+        <i class="fa fa-refresh" aria-hidden="true"></i>
+        Sync Playlist
+      </button>
+    </form>
   <% end %>
   Recommended Tracks
   <a href="#adjust-recommendations-modal" class="adjust-recommendations-trigger js-trigger-modal">
-    <i class="fa fa-cog"></i>
+    <i class="fa fa-cog" aria-hidden="true"></i>
   </a>
 </h2>
 <p>Based on what you&rsquo;ve been listening to, here are some similar songs:</p>
@@ -21,60 +23,6 @@
     </li>
   <% end %>
 </ul>
-
-<% if @recommendations.size > 0 %>
-  <div class="modal" id="create-playlist-modal">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">
-          <% if @user.spotify_playlist_id %>
-            Replace
-          <% else %>
-            New
-          <% end %>
-          Playlist
-          <small>
-            (<%= @recommendations.size %> track<%= 's' if @recommendations.size > 1 %>)
-          </small>
-        </p>
-        <button class="modal-close js-modal-close"></button>
-      </header>
-      <form action="/playlists" method="POST">
-        <section class="modal-card-body">
-          <div class="content">
-            <p>
-              <% if @user.spotify_playlist_id %>
-                Your &ldquo;<%= @playlist_name %>&rdquo; playlist will be replaced
-                with the following tracks:
-              <% else %>
-                A new playlist called &ldquo;<%= @playlist_name %>&rdquo; will be
-                created with the following tracks:
-              <% end %>
-            </p>
-            <ol class="playlist-track-list">
-              <% @recommendations.each do |track| %>
-                <li>
-                  <input type="hidden" name="track_uris[]" value="<%= track.uri %>">
-                  <strong><%= track.name %></strong>
-                  by <%= track.artist_names %>
-                </li>
-              <% end %>
-            </ol>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-primary" type="submit">
-            Save Playlist
-          </button>
-          <button class="button is-link js-modal-close" type="button">
-            Cancel
-          </button>
-        </footer>
-      </form>
-    </div>
-  </div>
-<% end %>
 
 <div class="modal" id="adjust-recommendations-modal">
   <div class="modal-background"></div>
