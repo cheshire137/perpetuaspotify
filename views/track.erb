@@ -3,7 +3,9 @@
     <% if track.image_url %>
       <div class="media-left">
         <figure class="image">
-          <img src="<%= track.image_url %>" alt="" width="<%= track.image_width %>" height="<%= track.image_height %>">
+          <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer">
+            <img src="<%= track.image_url %>" alt="" width="<%= track.image_width %>" height="<%= track.image_height %>">
+          </a>
         </figure>
       </div>
     <% end %>
