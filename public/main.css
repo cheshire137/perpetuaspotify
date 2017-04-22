@@ -72,3 +72,13 @@ body {
 .track-play-time {
   font-size: 0.8em;
 }
+
+.notification a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.notification a:hover,
+.notification a:focus {
+  text-decoration: none;
+}

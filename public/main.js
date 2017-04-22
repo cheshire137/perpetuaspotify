@@ -41,5 +41,18 @@ function listenForEscape() {
   }
 }
 
+function dismissNotification(event) {
+  const notification = event.target.closest('.notification')
+  notification.remove()
+}
+
+function setUpNotificationDismissals() {
+  const buttons = document.querySelectorAll('.js-hide-notification')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', dismissNotification)
+  }
+}
+
 setUpModals()
 listenForEscape()
+setUpNotificationDismissals()

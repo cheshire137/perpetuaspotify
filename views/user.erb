@@ -18,6 +18,19 @@
 </section>
 <section class="section">
   <div class="container">
+    <% if @error %>
+      <div class="notification is-danger">
+        <button class="delete js-hide-notification"></button>
+        <%= @error %>
+      </div>
+    <% end %>
+    <% if @playlist_name && @playlist_url %>
+      <div class="notification is-success">
+        <button class="delete js-hide-notification"></button>
+        Created playlist
+        <a href="<%= @playlist_url %>" target="_blank" rel="noopener noreferrer"><%= @playlist_name %></a>!
+      </div>
+    <% end %>
     <div class="columns">
       <div class="column">
         <h2 class="subtitle">Recently Played</h2>
@@ -48,12 +61,15 @@
               <p class="modal-card-title">Create Playlist</p>
               <button class="modal-close js-modal-close"></button>
             </header>
-            <form>
+            <form action="/playlists" method="POST">
+              <% @recommendations.each do |track| %>
+                <input type="hidden" name="track_uris[]" value="<%= track.uri %>">
+              <% end %>
               <section class="modal-card-body">
                 <div class="field">
                   <label class="label" for="playlist-name">Playlist name</label>
                   <p class="control">
-                    <input autofocus value="<%= @playlist_name %>" class="input js-playlist-name-input js-modal-focus" type="text" id="playlist-name">
+                    <input name="name" autofocus value="<%= @new_playlist_name %>" class="input js-playlist-name-input js-modal-focus" type="text" id="playlist-name">
                   </p>
                 </div>
               </section>

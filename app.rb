@@ -72,9 +72,64 @@ get '/user/:id-:user_name' do
   end
 
   @recommendations = trackset.recommendations
-  @playlist_name = trackset.playlist_name
+  @new_playlist_name = trackset.playlist_name
+
+  @error = session[:error]
+  session[:error] = nil
+
+  @playlist_name = session[:playlist_name]
+  @playlist_url = session[:playlist_url]
+  session[:playlist_name] = nil
+  session[:playlist_url] = nil
 
   erb :user
+end
+
+# Create a playlist as the authenticated user.
+post '/playlists' do
+  unless session[:user_id]
+    redirect '/'
+    return
+  end
+
+  user = User.where(id: session[:user_id]).first
+
+  unless user
+    status 404
+    erb :not_found
+    return
+  end
+
+  if (name = params['name'].strip).size < 1
+    session[:error] = "You must provide a name for your playlist."
+    redirect "/user/#{user.to_param}"
+    return
+  end
+
+  playlist_args = {
+    user_id: user.user_name, track_uris: params['track_uris'],
+    name: name
+  }
+
+  api = SpotifyApi.new(user.spotify_access_token)
+
+  playlist = begin
+    api.create_playlist(playlist_args)
+  rescue Fetcher::Unauthorized
+    if user.update_spotify_tokens
+      api = SpotifyApi.new(user.spotify_access_token)
+      api.create_playlist(playlist_args)
+    end
+  end
+
+  if playlist
+    session[:playlist_name] = playlist.name
+    session[:playlist_url] = playlist.url
+  else
+    session[:error] = 'Could not create playlist on Spotify.'
+  end
+
+  redirect "/user/#{user.to_param}"
 end
 
 # Callback for Spotify OAuth authentication.
