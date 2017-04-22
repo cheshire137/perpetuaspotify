@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20170416213604) do
     t.string   "spotify_access_token"
     t.string   "spotify_refresh_token"
     t.string   "spotify_playlist_id"
+    t.string   "icon_url"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree

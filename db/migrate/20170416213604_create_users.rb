@@ -6,6 +6,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :spotify_access_token
       t.string :spotify_refresh_token
       t.string :spotify_playlist_id
+      t.string :icon_url
       t.timestamps null: false
     end
 
