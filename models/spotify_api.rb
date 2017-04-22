@@ -7,11 +7,6 @@ class SpotifyApi < Fetcher
     super('https://api.spotify.com/v1', token)
   end
 
-  # "https://open.spotify.com/user/wizzler" => "wizzler"
-  def self.get_user_name(url)
-    url.split('/user/').last
-  end
-
   # https://developer.spotify.com/web-api/web-api-personalization-endpoints/get-recently-played/
   def get_recently_played
     json = get('/me/player/recently-played')
