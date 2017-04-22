@@ -65,6 +65,9 @@
               </a>
             <% end %>
             Recommended Tracks
+            <a href="#adjust-recommendations-modal" class="adjust-recommendations-trigger js-trigger-modal">
+              <i class="fa fa-cog"></i>
+            </a>
           </h2>
           <p>Based on what you&rsquo;ve been listening to, here are some similar songs:</p>
           <ul class="recommendations-list tracks-list">
@@ -133,3 +136,28 @@
     </div>
   </div>
 <% end %>
+
+<div class="modal" id="adjust-recommendations-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Adjust Recommendations
+      </p>
+      <button class="modal-close js-modal-close"></button>
+    </header>
+    <form action="/recommendations" method="GET">
+      <section class="modal-card-body">
+
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary" type="submit">
+          Save
+        </button>
+        <button class="button is-link js-modal-close" type="button">
+          Cancel
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

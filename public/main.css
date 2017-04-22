@@ -171,3 +171,8 @@ body {
 .nav-item .icon {
   margin-right: 10px;
 }
+
+.adjust-recommendations-trigger,
+.adjust-recommendations-trigger .fa {
+  font-size: 1rem;
+}
