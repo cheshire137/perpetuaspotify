@@ -78,6 +78,30 @@ class SpotifyApi < Fetcher
     json
   end
 
+  def create_playlist(user_id:, track_uris:, name:, public_playlist: true, collaborative: false)
+    data = {
+      name: name,
+      public: public_playlist,
+      collaborative: collaborative
+    }
+    create_json = post("/users/#{user_id}/playlists") do |req|
+      req.set_form_data(data)
+    end
+
+    return unless create_json && create_json['id']
+
+    playlist_id = create_json['id']
+    data = { uris: track_uris }
+    tracks_json = post("/users/#{user_id}/playlists/#{playlist_id}/tracks") do |req|
+      req.set_form_data(data)
+    end
+
+    return unless tracks_json && tracks_json['snapshot_id']
+
+    create_json['snapshot_id'] = tracks_json['snapshot_id']
+    create_json
+  end
+
   private
 
   # https://developer.spotify.com/web-api/get-several-tracks/
