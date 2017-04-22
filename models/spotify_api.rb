@@ -4,8 +4,8 @@ require_relative 'spotify_playlist'
 require_relative 'spotify_track'
 
 class SpotifyApi < Fetcher
-  def initialize(token)
-    super('https://api.spotify.com/v1', token)
+  def initialize(token, logger:)
+    super('https://api.spotify.com/v1', token, logger: logger)
   end
 
   # https://developer.spotify.com/web-api/web-api-personalization-endpoints/get-recently-played/
@@ -82,6 +82,27 @@ class SpotifyApi < Fetcher
     return unless json
 
     json
+  end
+
+  def replace_playlist(user_id:, playlist_id:, track_uris:)
+    url = "/users/#{user_id}/playlists/#{playlist_id}/tracks"
+    headers = { 'Content-Type' => 'application/json' }
+
+    put(url, headers: headers) do |req|
+      req.body = { uris: track_uris }.to_json
+    end
+
+    return unless response_code == '201'
+
+    get_playlist(user_id: user_id, playlist_id: playlist_id)
+  end
+
+  def get_playlist(user_id:, playlist_id:)
+    json = get("/users/#{user_id}/playlists/#{playlist_id}")
+
+    return unless json && json['id']
+
+    SpotifyPlaylist.new(json)
   end
 
   def create_playlist(user_id:, track_uris:, name:, public_playlist: true, collaborative: false)

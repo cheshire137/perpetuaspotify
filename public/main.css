@@ -96,3 +96,12 @@ body {
 .content p.create-playlist-box {
   margin-bottom: 3rem;
 }
+
+.content ol.playlist-track-list {
+  overflow: auto;
+  list-style: none;
+  max-height: 350px;
+  margin-left: 0;
+  margin-right: 0;
+  padding-right: 2em;
+}

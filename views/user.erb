@@ -27,17 +27,24 @@
         <%= @error %>
       </div>
     <% end %>
-    <% if @playlist_name && @playlist_url %>
+    <% if @playlist_url %>
       <div class="notification is-success">
         <button class="delete js-hide-notification"></button>
-        Created playlist
-        <a href="<%= @playlist_url %>" target="_blank" rel="noopener noreferrer"><%= @playlist_name %></a>!
+        Playlist
+        <a href="<%= @playlist_url %>" target="_blank" rel="noopener noreferrer"><%= @playlist_name %></a>
+        has been updated!
       </div>
     <% end %>
     <div class="content">
       <% if @recommendations.size > 0 %>
         <p class="has-text-centered create-playlist-box">
-          <a href="#create-playlist-modal" class="button is-info js-trigger-modal">Create Playlist from Recommended Tracks</a>
+          <a href="#create-playlist-modal" class="button is-info js-trigger-modal">
+            <% if @user.spotify_playlist_id %>
+              Update Playlist with Recommended Tracks
+            <% else %>
+              Create Playlist from Recommended Tracks
+            <% end %>
+          </a>
         </p>
       <% end %>
       <div class="columns">
@@ -76,7 +83,12 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">
-          New Playlist
+          <% if @user.spotify_playlist_id %>
+            Replace
+          <% else %>
+            New
+          <% end %>
+          Playlist
           <small>
             (<%= @recommendations.size %> track<%= 's' if @recommendations.size > 1 %>)
           </small>
@@ -84,20 +96,31 @@
         <button class="modal-close js-modal-close"></button>
       </header>
       <form action="/playlists" method="POST">
-        <% @recommendations.each do |track| %>
-          <input type="hidden" name="track_uris[]" value="<%= track.uri %>">
-        <% end %>
         <section class="modal-card-body">
-          <div class="field">
-            <label class="label" for="playlist-name">Playlist name</label>
-            <p class="control">
-              <input name="name" autofocus value="<%= @new_playlist_name %>" class="input js-playlist-name-input js-modal-focus" type="text" id="playlist-name">
+          <div class="content">
+            <p>
+              <% if @user.spotify_playlist_id %>
+                Your &ldquo;<%= @playlist_name %>&rdquo; playlist will be replaced
+                with the following tracks:
+              <% else %>
+                A new playlist called &ldquo;<%= @playlist_name %>&rdquo; will be
+                created with the following tracks:
+              <% end %>
             </p>
+            <ol class="playlist-track-list">
+              <% @recommendations.each do |track| %>
+                <li>
+                  <input type="hidden" name="track_uris[]" value="<%= track.uri %>">
+                  <strong><%= track.name %></strong>
+                  by <%= track.artist_names %>
+                </li>
+              <% end %>
+            </ol>
           </div>
         </section>
         <footer class="modal-card-foot">
           <button class="button is-primary" type="submit">
-            Create Playlist
+            Save Playlist
           </button>
           <button class="button is-link js-modal-close" type="button">
             Cancel

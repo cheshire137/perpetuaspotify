@@ -2,6 +2,7 @@ require 'dotenv/load'
 require 'sinatra'
 require 'sinatra/activerecord'
 
+require_relative 'models/playlist_manager'
 require_relative 'models/spotify_auth_api'
 require_relative 'models/spotify_api'
 require_relative 'models/spotify_trackset'
@@ -69,7 +70,7 @@ get '/user/:id-:user_name' do
     return
   end
 
-  trackset = SpotifyTrackset.new(@user)
+  trackset = SpotifyTrackset.new(@user, logger: logger)
 
   @tracks = begin
     trackset.tracks
@@ -79,14 +80,12 @@ get '/user/:id-:user_name' do
   end
 
   @recommendations = trackset.recommendations
-  @new_playlist_name = trackset.playlist_name
+  @playlist_name = PlaylistManager::NAME
 
   @error = session[:error]
   session[:error] = nil
 
-  @playlist_name = session[:playlist_name]
   @playlist_url = session[:playlist_url]
-  session[:playlist_name] = nil
   session[:playlist_url] = nil
 
   erb :user
@@ -107,31 +106,14 @@ post '/playlists' do
     return
   end
 
-  if (name = params['name'].strip).size < 1
-    session[:error] = "You must provide a name for your playlist."
-    redirect "/user/#{user.to_param}"
-    return
-  end
+  manager = PlaylistManager.new(user, logger: logger)
+  manager.sync_playlist(params['track_uris'])
 
-  playlist_args = {
-    user_id: user.user_name, track_uris: params['track_uris'],
-    name: name
-  }
+  if manager.playlist
+    user.spotify_playlist_id = manager.playlist.id
+    user.save if user.changed?
 
-  api = SpotifyApi.new(user.spotify_access_token)
-
-  playlist = begin
-    api.create_playlist(playlist_args)
-  rescue Fetcher::Unauthorized
-    if user.update_spotify_tokens
-      api = SpotifyApi.new(user.spotify_access_token)
-      api.create_playlist(playlist_args)
-    end
-  end
-
-  if playlist
-    session[:playlist_name] = playlist.name
-    session[:playlist_url] = playlist.url
+    session[:playlist_url] = manager.playlist.url
   else
     session[:error] = 'Could not create playlist on Spotify.'
   end
@@ -151,7 +133,7 @@ get '/callback/spotify' do
   if tokens
     access_token = tokens['access_token']
     refresh_token = tokens['refresh_token']
-    spotify_api = SpotifyApi.new(access_token)
+    spotify_api = SpotifyApi.new(access_token, logger: logger)
 
     if me = spotify_api.get_me
       user = User.where(email: me['email']).first_or_initialize

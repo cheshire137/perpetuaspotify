@@ -1,9 +1,10 @@
 class SpotifyTrackset
   class Error < StandardError; end
 
-  def initialize(user)
+  def initialize(user, logger:)
     @user = user
-    @api = SpotifyApi.new(@user.spotify_access_token)
+    @logger = logger
+    @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
   end
 
   def tracks
@@ -13,7 +14,7 @@ class SpotifyTrackset
       @api.get_recently_played
     rescue Fetcher::Unauthorized
       if @user.update_spotify_tokens
-        @api = SpotifyApi.new(@user.spotify_access_token)
+        @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
         @api.get_recently_played
       else
         raise Error, 'Failed to get recent Spotify tracks.'
@@ -33,18 +34,6 @@ class SpotifyTrackset
       limit: limit, track_ids: get_seed_track_ids,
       target_features: get_target_features
     )
-  end
-
-  def playlist_name
-    artists = recommendations.flat_map { |track| track.artists.map(&:name) }
-    return if artists.size < 1
-
-    artist_counts = Hash.new(0)
-    artists.each do |name|
-      artist_counts[name] += 1
-    end
-    artist_counts = artist_counts.sort_by { |name, count| [-count, name] }.to_h
-    artist_counts.keys.uniq[0...3].sort.join(', ')
   end
 
   private
