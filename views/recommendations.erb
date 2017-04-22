@@ -1,0 +1,63 @@
+<h2 class="subtitle clearfix">
+  <% if @recommendations.size > 0 %>
+    <a href="#create-playlist-modal" class="button pull-right is-info js-trigger-modal">
+      <% if @user.spotify_playlist_id %>
+        Replace Playlist
+      <% else %>
+        Create Playlist
+      <% end %>
+    </a>
+  <% end %>
+  Recommended Tracks
+  <a href="#adjust-recommendations-modal" class="adjust-recommendations-trigger js-trigger-modal">
+    <i class="fa fa-cog"></i>
+  </a>
+</h2>
+<p>Based on what you&rsquo;ve been listening to, here are some similar songs:</p>
+<ul class="recommendations-list tracks-list">
+  <% @recommendations.each do |track| %>
+    <li>
+      <%= erb :track, locals: { track: track } %>
+    </li>
+  <% end %>
+</ul>
+
+<div class="modal" id="adjust-recommendations-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Adjust Recommendations
+      </p>
+      <button class="modal-close js-modal-close"></button>
+    </header>
+    <form action="/recommendations" method="GET">
+      <section class="modal-card-body">
+        <p>
+          Adjust these audio features to change which songs
+          are recommended:
+        </p>
+        <% @features.each do |feature| %>
+          <div class="control is-horizontal">
+            <div class="control-label">
+              <label class="label" for="<%= feature %>"><%= @feature_labels[feature] %></label>
+            </div>
+            <div class="control">
+              <span class="feature-range-min">0%</span>
+              <input id="<%= feature %>" value="<%= @feature_values[feature] %>" type="range" min="0" max="1" step="0.05" class="slider">
+              <span class="feature-range-max">100%</span>
+            </div>
+          </div>
+        <% end %>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-primary" type="submit">
+          Save
+        </button>
+        <button class="button is-link js-modal-close" type="button">
+          Cancel
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>
