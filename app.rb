@@ -139,6 +139,9 @@ get '/callback/spotify' do
       user = User.where(email: me['email']).first_or_initialize
       user.spotify_access_token = access_token
       user.spotify_refresh_token = refresh_token
+      if me['images'].size > 0
+        user.icon_url = me['images'].first['url']
+      end
       user.user_name = me['id']
 
       if user.save
