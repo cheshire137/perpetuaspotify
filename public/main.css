@@ -167,3 +167,7 @@ body {
   color: #c3c3c3;
   margin-left: 1rem;
 }
+
+.nav-item .icon {
+  margin-right: 10px;
+}

@@ -9,6 +9,11 @@
         </div>
         <div class="nav-right nav-menu">
           <a href="/logout" class="nav-item">
+            <% if @user.icon_url %>
+              <span class="icon">
+                <img src="<%= @user.icon_url %>" alt="" class="user-icon">
+              </span>
+            <% end %>
             Log out <%= @user.user_name %>
           </a>
         </div>
