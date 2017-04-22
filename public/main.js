@@ -53,6 +53,30 @@ function setUpNotificationDismissals() {
   }
 }
 
+function toggleTrackInfo(event) {
+  const button = event.currentTarget
+  button.blur()
+
+  const container = button.closest('.js-track-info-container')
+  const trackInfo = container.querySelector('.js-track-info')
+  const isVisible = trackInfo.classList.contains('is-visible')
+
+  const allTrackInfos = document.querySelectorAll('.js-track-info.is-visible')
+  for (let i = 0; i < allTrackInfos.length; i++) {
+    allTrackInfos[i].classList.remove('is-visible')
+  }
+
+  trackInfo.classList.toggle('is-visible', !isVisible)
+}
+
+function setUpTrackInfo() {
+  const buttons = document.querySelectorAll('.js-track-info-toggle')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', toggleTrackInfo)
+  }
+}
+
 setUpModals()
 listenForEscape()
 setUpNotificationDismissals()
+setUpTrackInfo()

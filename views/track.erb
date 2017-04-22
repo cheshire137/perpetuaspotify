@@ -1,15 +1,15 @@
-<div class="box">
+<div class="js-track-info-container">
   <article class="media">
     <% if track.image_url %>
-      <div class="media-left">
+      <div class="media-left track-image-container">
         <figure class="image">
-          <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer">
+          <button class="button is-image js-track-info-toggle" type="button">
             <img src="<%= track.image_url %>" alt="" width="<%= track.image_width %>" height="<%= track.image_height %>">
-          </a>
+          </button>
         </figure>
       </div>
     <% end %>
-    <div class="media-content content">
+    <div class="media-content content track-info js-track-info">
       <strong class="track-name">
         <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer"><%= track.name %></a>
       </strong>

@@ -51,6 +51,10 @@ body {
   margin-right: 0;
 }
 
+.tracks-list > li {
+  display: inline-block;
+}
+
 .tracks-list > li + li {
   margin-top: 1em;
 }
@@ -126,4 +130,31 @@ body {
 .hero.is-primary a.nav-item.title:hover,
 .hero.is-primary a.nav-item.title:focus {
   background-color: transparent;
+}
+
+.media-left.track-image-container {
+  margin-right: 0;
+}
+
+.track-info {
+  display: none;
+}
+
+.track-info.is-visible {
+  display: block;
+  background-color: #073642;
+  min-height: 65px;
+  margin-top: 2px;
+  padding: 5px 1rem 0 1rem;
+}
+
+.button.is-image {
+  height: auto;
+  padding: 0;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.button.is-image img {
+  display: block;
 }
