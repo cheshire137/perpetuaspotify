@@ -29,15 +29,18 @@ class SpotifyTrackset
     @tracks = tracks
   end
 
-  def recommendations(limit: 24)
+  def audio_features
+    @audio_features ||= get_target_features
+  end
 
+  def recommendations(limit: 24)
     @recommendations ||= begin
       max_seeds = 5
       artist_ids = get_seed_artist_ids
 
       @api.get_recommendations(
         limit: limit, track_ids: get_seed_track_ids(max_seeds - artist_ids.size),
-        target_features: get_target_features,
+        target_features: audio_features,
         artist_ids: artist_ids
       )
     end
@@ -79,12 +82,11 @@ class SpotifyTrackset
       danceability: 0,
       energy: 0,
       instrumentalness: 0,
+      liveness: 0,
       loudness: 0,
-      mode: 0,
       speechiness: 0,
       tempo: 0,
-      valence: 0,
-      time_signature: 0
+      valence: 0
     }
     feature_names = feature_averages.keys
     feature_sets.each do |feature_set|

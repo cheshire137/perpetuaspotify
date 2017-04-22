@@ -91,6 +91,18 @@ get '/user/:id-:user_name' do
 
   @recommendations = trackset.recommendations
   @playlist_name = PlaylistManager::NAME
+  @features = [:acousticness, :danceability, :energy, :instrumentalness,
+               :liveness, :speechiness, :valence]
+  @feature_labels = {
+    acousticness: "Acoustic",
+    danceability: "Danceable",
+    energy: "Energy",
+    instrumentalness: "Instrumental",
+    liveness: "Liveness",
+    speechiness: "Speechy",
+    valence: "Valence"
+  }
+  @feature_values = trackset.audio_features
 
   @error = session[:error]
   session[:error] = nil

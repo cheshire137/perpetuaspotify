@@ -148,7 +148,18 @@
     </header>
     <form action="/recommendations" method="GET">
       <section class="modal-card-body">
-
+        <% @features.each do |feature| %>
+          <div class="control is-horizontal">
+            <div class="control-label">
+              <label class="label" for="<%= feature %>"><%= @feature_labels[feature] %></label>
+            </div>
+            <div class="control">
+              <span class="feature-range-min">0%</span>
+              <input id="<%= feature %>" value="<%= @feature_values[feature] %>" type="range" min="0" max="1" step="0.05" class="slider">
+              <span class="feature-range-max">100%</span>
+            </div>
+          </div>
+        <% end %>
       </section>
       <footer class="modal-card-foot">
         <button class="button is-primary" type="submit">

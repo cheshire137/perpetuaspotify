@@ -4,7 +4,7 @@ class SpotifyAudioFeatures
   # See https://developer.spotify.com/web-api/get-several-audio-features/
   attr_reader :acousticness, :danceability, :energy, :instrumentalness,
     :loudness, :mode, :speechiness, :tempo, :valence, :track_id,
-    :time_signature, :duration_ms
+    :time_signature, :duration_ms, :liveness
 
   def initialize(hash)
     @track_id = hash['id']
@@ -14,6 +14,7 @@ class SpotifyAudioFeatures
     @instrumentalness = hash['instrumentalness']
     @loudness = hash['loudness'] # between -60 and 0 db
     @mode = hash['mode']
+    @liveness = hash['liveness']
     @speechiness = hash['speechiness']
     @tempo = hash['tempo'] # bpm
     @valence = hash['valence']
@@ -29,6 +30,9 @@ class SpotifyAudioFeatures
     end
     if @energy > 50
       @features_hash['Energy'] = percent_str(@energy)
+    end
+    if @liveness > 50
+      @features_hash['Liveness'] = percent_str(@liveness)
     end
     if @instrumentalness > 50
       @features_hash['Instrumentalness'] = percent_str(@instrumentalness)

@@ -176,3 +176,119 @@ body {
 .adjust-recommendations-trigger .fa {
   font-size: 1rem;
 }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+  background-color: transparent;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 2px #090f10;
+  background: #6EDBCA;
+  border-radius: 1px;
+  border: 0px solid #00d1b2;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  box-shadow: 1px 1px 1px #090f10;
+  border: 1px solid #737373;
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  background: #F5F5F5;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -5.5px;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+  background: #6EDBCA;
+}
+
+input[type="range"]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 2px #090f10;
+  background: #6EDBCA;
+  border-radius: 1px;
+  border: 0px solid #00d1b2;
+}
+
+input[type="range"]::-moz-range-thumb {
+  box-shadow: 1px 1px 1px #090f10;
+  border: 1px solid #737373;
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  background: #F5F5F5;
+  cursor: pointer;
+}
+
+input[type="range"]::-ms-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+input[type="range"]::-ms-fill-lower {
+  background: #6EDBCA;
+  border: 0px solid #00d1b2;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px #090f10;
+}
+
+input[type="range"]::-ms-fill-upper {
+  background: #6EDBCA;
+  border: 0px solid #00d1b2;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px #090f10;
+}
+
+input[type="range"]::-ms-thumb {
+  box-shadow: 1px 1px 1px #090f10;
+  border: 1px solid #737373;
+  height: 15px;
+  width: 15px;
+  border-radius: 15px;
+  background: #F5F5F5;
+  cursor: pointer;
+}
+
+input[type="range"]:focus::-ms-fill-lower {
+  background: #6EDBCA;
+}
+
+input[type="range"]:focus::-ms-fill-upper {
+  background: #6EDBCA;
+}
+
+.feature-range-min,
+.feature-range-max {
+  font-size: 12px;
+  line-height: 25px;
+  display: inline-block;
+}
+
+.feature-range-min {
+  margin-right: 5px;
+}
+
+.feature-range-max {
+  margin-left: 5px;
+}
