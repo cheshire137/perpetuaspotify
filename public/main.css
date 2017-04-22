@@ -67,3 +67,8 @@ body {
 .content ul.audio-features-list li + li:before {
   content: "\b7\a0";
 }
+
+.track-artists,
+.track-play-time {
+  font-size: 0.8em;
+}

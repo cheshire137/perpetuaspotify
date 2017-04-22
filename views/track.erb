@@ -10,20 +10,18 @@
     <div class="media-content content">
       <strong>
         <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer"><%= track.name %></a>
-        by
-        <% track.artists.each_with_index do |artist, i| %>
-          <a href="<%= artist.url %>" target="_blank" rel="noopener noreferrer"><%= artist.name %></a><%= ',' if i < track.artist_count - 1 %>
-        <% end %>
       </strong>
-      <% if track.played_at %>
-        <small><%= track.formatted_played_at %></small>
-      <% end %>
-      <% if track.audio_features %>
-        <ul class="audio-features-list">
-          <% track.audio_features.each do |feature, value| %>
-            <li><%= feature %>: <%= value %></li>
+      <br>
+      <span class="track-artists">
+        by
+        <strong>
+          <% track.artists.each_with_index do |artist, i| %>
+            <a href="<%= artist.url %>" target="_blank" rel="noopener noreferrer"><%= artist.name %></a><%= ',' if i < track.artist_count - 1 %>
           <% end %>
-        </ul>
+        </strong>
+      </span>
+      <% if track.played_at %>
+        &mdash; <span class="track-play-time"><%= track.formatted_played_at %></span>
       <% end %>
     </div>
   </article>
