@@ -8,12 +8,21 @@
 <section class="section">
   <div class="container content has-text-centered">
     <div class="columns">
-      <div class="column is-half is-offset-one-quarter">
-        <p>
-          <a class="button is-large is-spotify" href="<%= @auth_url %>">
-            Sign in with Spotify
-          </a>
-        </p>
+      <div class="column is-two-thirds is-offset-2">
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <a class="button is-large is-spotify" href="<%= @auth_url %>">
+                Sign in with Spotify
+              </a>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p class="subtitle">Sign in to create a playlist based on your recent Spotify listening history.</p>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </div>

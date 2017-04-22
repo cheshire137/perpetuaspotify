@@ -111,6 +111,10 @@ body {
   padding-bottom: 1rem;
 }
 
+.hero-body > .container > .title {
+  padding-top: 0.5rem;
+}
+
 .nav-item {
   padding-top: 0;
   padding-bottom: 0;
@@ -157,4 +161,9 @@ body {
 
 .pull-right {
   float: right;
+}
+
+.box .content .subtitle {
+  color: #c3c3c3;
+  margin-left: 1rem;
 }
