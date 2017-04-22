@@ -97,10 +97,6 @@ body {
   text-decoration: none;
 }
 
-.content p.create-playlist-box {
-  margin-bottom: 3rem;
-}
-
 .content ol.playlist-track-list {
   overflow: auto;
   list-style: none;
@@ -111,8 +107,8 @@ body {
 }
 
 .hero-body {
-  padding-top: 0;
-  padding-bottom: 0.9rem;
+  padding-top: 0.1rem;
+  padding-bottom: 1rem;
 }
 
 .nav-item {
@@ -157,4 +153,8 @@ body {
 
 .button.is-image img {
   display: block;
+}
+
+.pull-right {
+  float: right;
 }

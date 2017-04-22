@@ -36,17 +36,6 @@
       </div>
     <% end %>
     <div class="content">
-      <% if @recommendations.size > 0 %>
-        <p class="has-text-centered create-playlist-box">
-          <a href="#create-playlist-modal" class="button is-info js-trigger-modal">
-            <% if @user.spotify_playlist_id %>
-              Update Playlist with Recommended Tracks
-            <% else %>
-              Create Playlist from Recommended Tracks
-            <% end %>
-          </a>
-        </p>
-      <% end %>
       <div class="columns">
         <div class="column">
           <h2 class="subtitle">Recently Played</h2>
@@ -60,7 +49,16 @@
           </ul>
         </div>
         <div class="column">
-          <h2 class="subtitle">
+          <h2 class="subtitle clearfix">
+            <% if @recommendations.size > 0 %>
+              <a href="#create-playlist-modal" class="button pull-right is-info js-trigger-modal">
+                <% if @user.spotify_playlist_id %>
+                  Replace Playlist
+                <% else %>
+                  Create Playlist
+                <% end %>
+              </a>
+            <% end %>
             Recommended Tracks
           </h2>
           <p>Based on what you&rsquo;ve been listening to, here are some similar songs:</p>
