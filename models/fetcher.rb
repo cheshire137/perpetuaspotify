@@ -37,15 +37,18 @@ class Fetcher
 
   # Will make a POST request to the given path. Yields the request
   # so the request body can be set.
-  def post(path)
+  def post(path, headers: {})
     uri = get_uri(path)
     http = get_http(uri)
-    req = Net::HTTP::Post.new(uri.request_uri, get_headers)
+    all_headers = get_headers.merge(headers)
+    req = Net::HTTP::Post.new(uri.request_uri, all_headers)
     yield req if block_given?
 
     res = http.request(req)
     if res.kind_of? Net::HTTPSuccess
       JSON.parse(res.body)
+    elsif res.code == '401'
+      raise Unauthorized, res.message
     end
   end
 
