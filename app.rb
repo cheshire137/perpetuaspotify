@@ -15,6 +15,16 @@ configure do
   use Rack::CommonLogger, file
 end
 
+helpers do
+  def file_time(file_name)
+    File.mtime("#{settings.root}/public/#{file_name}").to_i
+  end
+
+  def asset_path(file_name)
+    "/#{file_name}?t=#{file_time(file_name)}"
+  end
+end
+
 def escape_url(url)
   URI.escape(url, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
 end
