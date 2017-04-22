@@ -9,8 +9,8 @@ class SpotifyApi < Fetcher
   end
 
   # https://developer.spotify.com/web-api/web-api-personalization-endpoints/get-recently-played/
-  def get_recently_played
-    json = get('/me/player/recently-played')
+  def get_recently_played(limit: 24)
+    json = get("/me/player/recently-played?limit=#{limit}")
 
     return unless json
 
@@ -28,10 +28,15 @@ class SpotifyApi < Fetcher
   end
 
   # https://developer.spotify.com/web-api/get-recommendations/
-  def get_recommendations(limit: 20, track_ids: [], target_features: {})
-    params = { limit: limit }
+  def get_recommendations(limit: 24, artist_ids: [], track_ids: [], target_features: {})
+    # Get more than the specified limit in case duplicates are returned:
+    params = { limit: limit + 5 }
+
     if track_ids.size > 0
       params[:seed_tracks] = track_ids.join(',')
+    end
+    if artist_ids.size > 0
+      params[:seed_artists] = artist_ids.join(',')
     end
     target_features.each do |feature, value|
       params["target_#{feature}"] = value
@@ -52,7 +57,8 @@ class SpotifyApi < Fetcher
       have_seen
     end
 
-    tracks_data.map { |data| SpotifyTrack.new(data) }
+    tracks = tracks_data.map { |data| SpotifyTrack.new(data) }
+    tracks[0...limit]
   end
 
   def get_audio_features_for(track_ids)
