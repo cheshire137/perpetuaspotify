@@ -37,7 +37,8 @@ class SpotifyTrackset
 
   def playlist_name
     artists = recommendations.flat_map { |track| track.artists.map(&:name) }
-    artists.sort[0...3].join(', ')
+    return if artists.size < 1
+    artists.sort.uniq[0...3].join(', ')
   end
 
   private
