@@ -42,7 +42,17 @@ class SpotifyApi < Fetcher
 
     return unless json
 
-    json['tracks'].map { |data| SpotifyTrack.new(data) }
+    tracks_data = json['tracks']
+
+    # Remove duplicate suggestions
+    seen_ids = []
+    tracks_data = tracks_data.reject do |data|
+      have_seen = seen_ids.include?(data['id'])
+      seen_ids << data['id']
+      have_seen
+    end
+
+    tracks_data.map { |data| SpotifyTrack.new(data) }
   end
 
   def get_audio_features_for(track_ids)
