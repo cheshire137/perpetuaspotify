@@ -45,6 +45,12 @@ body {
   text-decoration: underline;
 }
 
+.content ul.tracks-list {
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .tracks-list > li + li {
   margin-top: 1em;
 }
@@ -81,4 +87,8 @@ body {
 .notification a:hover,
 .notification a:focus {
   text-decoration: none;
+}
+
+.content p.create-playlist-box {
+  margin-bottom: 3rem;
 }
