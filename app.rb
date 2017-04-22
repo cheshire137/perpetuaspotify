@@ -1,11 +1,18 @@
+require 'dotenv/load'
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'dotenv/load'
 
 require_relative 'models/spotify_auth_api'
 require_relative 'models/spotify_api'
 require_relative 'models/spotify_trackset'
 require_relative 'models/user'
+
+configure do
+  file = File.new("#{settings.root}/log/#{settings.environment}.log", 'a+')
+  file.sync = true
+
+  use Rack::CommonLogger, file
+end
 
 def escape_url(url)
   URI.escape(url, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
