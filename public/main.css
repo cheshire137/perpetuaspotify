@@ -30,7 +30,7 @@ body {
 }
 
 .hero .nav .title {
-  line-height: inherit;
+  line-height: 1;
 }
 
 .hero.is-primary .nav-item a:not(.button),
@@ -104,4 +104,26 @@ body {
   margin-left: 0;
   margin-right: 0;
   padding-right: 2em;
+}
+
+.hero-body {
+  padding-top: 0;
+  padding-bottom: 0.9rem;
+}
+
+.nav-item {
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 30px;
+}
+
+.nav-item.title {
+  font-size: 2rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.hero.is-primary a.nav-item.title:hover,
+.hero.is-primary a.nav-item.title:focus {
+  background-color: transparent;
 }
