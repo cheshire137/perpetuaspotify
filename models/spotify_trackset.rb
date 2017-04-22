@@ -29,8 +29,15 @@ class SpotifyTrackset
   end
 
   def recommendations(limit: 20)
-    @api.get_recommendations(limit: limit, track_ids: get_seed_track_ids,
-                             target_features: get_target_features)
+    @recommendations ||= @api.get_recommendations(
+      limit: limit, track_ids: get_seed_track_ids,
+      target_features: get_target_features
+    )
+  end
+
+  def playlist_name
+    artists = recommendations.flat_map { |track| track.artists.map(&:name) }
+    artists.sort[0...3].join(', ')
   end
 
   private
