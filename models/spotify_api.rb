@@ -1,5 +1,6 @@
 require_relative 'fetcher'
 require_relative 'spotify_audio_features'
+require_relative 'spotify_playlist'
 require_relative 'spotify_track'
 
 class SpotifyApi < Fetcher
@@ -74,27 +75,28 @@ class SpotifyApi < Fetcher
   end
 
   def create_playlist(user_id:, track_uris:, name:, public_playlist: true, collaborative: false)
-    data = {
-      name: name,
-      public: public_playlist,
-      collaborative: collaborative
-    }
-    create_json = post("/users/#{user_id}/playlists") do |req|
-      req.set_form_data(data)
+    headers = { 'Content-Type' => 'application/json' }
+    playlist_url = "/users/#{user_id}/playlists"
+    create_json = post(playlist_url, headers: headers) do |req|
+      req.body = {
+        name: name,
+        public: public_playlist,
+        collaborative: collaborative
+      }.to_json
     end
 
     return unless create_json && create_json['id']
 
     playlist_id = create_json['id']
-    data = { uris: track_uris }
-    tracks_json = post("/users/#{user_id}/playlists/#{playlist_id}/tracks") do |req|
-      req.set_form_data(data)
+    tracks_url = "/users/#{user_id}/playlists/#{playlist_id}/tracks"
+    tracks_json = post(tracks_url, headers: headers) do |req|
+      req.body = { uris: track_uris }.to_json
     end
 
     return unless tracks_json && tracks_json['snapshot_id']
 
     create_json['snapshot_id'] = tracks_json['snapshot_id']
-    create_json
+    SpotifyPlaylist.new(create_json)
   end
 
   private
