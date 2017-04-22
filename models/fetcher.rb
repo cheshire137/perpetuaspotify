@@ -31,7 +31,7 @@ class Fetcher
 
   # Will make a PUT request to the given path. Yields the request
   # so the request body can be set.
-  def put(path, headers: {})
+  def put(path, headers: {}, &block)
     make_request(Net::HTTP::Put, path, headers: headers, &block)
   end
 
