@@ -14,7 +14,8 @@ end
 def get_spotify_auth_url
   client_id = ENV['SPOTIFY_CLIENT_ID']
   redirect_uri = escape_url("#{request.base_url}/callback/spotify")
-  scopes = ['user-read-recently-played', 'user-read-email']
+  scopes = ['user-read-recently-played', 'user-read-email',
+            'playlist-modify-public']
 
   "https://accounts.spotify.com/authorize?client_id=" +
     "#{client_id}&response_type=code&redirect_uri=" +
