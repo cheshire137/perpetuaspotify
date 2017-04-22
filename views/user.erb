@@ -47,9 +47,7 @@
           <p>This is what you&rsquo;ve been listening to on Spotify:</p>
           <ul class="recently-played-list tracks-list">
             <% @tracks.each do |track| %>
-              <li>
-                <%= erb :track, locals: { track: track } %>
-              </li>
+              <li><%= erb :track, locals: { track: track } %></li>
             <% end %>
           </ul>
         </div>

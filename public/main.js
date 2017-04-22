@@ -78,7 +78,7 @@ function setUpTrackInfo(container) {
 }
 
 function toggleSubmitButton(button, disabled) {
-  button.disabled = disabled
+  button.classList.toggle('is-disabled', disabled)
   button.classList.toggle('is-loading', disabled)
 }
 
@@ -103,6 +103,7 @@ function onRemoteFormSubmit(event) {
       setUpModals(target)
       setUpRemoteForms(target)
       setUpTrackInfo(target)
+      setUpSubmitButtons(target)
     } else {
       console.error(req.status, req.statusText)
     }
@@ -118,8 +119,18 @@ function setUpRemoteForms(container) {
   }
 }
 
+function setUpSubmitButtons(container) {
+  const buttons = container.querySelectorAll('form .js-submit-button')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function(event) {
+      toggleSubmitButton(event.currentTarget, true)
+    })
+  }
+}
+
 closeModalOnEscape()
 setUpNotificationDismissals()
 setUpModals(document)
 setUpTrackInfo(document)
 setUpRemoteForms(document)
+setUpSubmitButtons(document)
