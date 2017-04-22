@@ -91,18 +91,11 @@ get '/user/:id-:user_name' do
 
   @recommendations = trackset.recommendations
   @playlist_name = PlaylistManager::NAME
-  @features = [:acousticness, :danceability, :energy, :instrumentalness,
-               :liveness, :speechiness, :valence]
-  @feature_labels = {
-    acousticness: "Acoustic",
-    danceability: "Danceable",
-    energy: "Energy",
-    instrumentalness: "Instrumental",
-    liveness: "Liveness",
-    speechiness: "Speechy",
-    valence: "Valence"
-  }
+  @feature_labels = SpotifyAudioFeatures::FEATURE_LABELS
+  @features = @feature_labels.keys
   @feature_values = trackset.audio_features
+  @seed_artist_ids = trackset.seed_artist_ids
+  @seed_track_ids = trackset.seed_track_ids
 
   @error = session[:error]
   session[:error] = nil
@@ -111,6 +104,46 @@ get '/user/:id-:user_name' do
   session[:playlist_url] = nil
 
   erb :user
+end
+
+post '/recommendations' do
+  unless session[:user_id]
+    status 401
+    body ''
+    return
+  end
+
+  @user = User.where(id: session[:user_id]).first
+
+  unless @user
+    status 404
+    body ''
+    return
+  end
+
+  @playlist_name = PlaylistManager::NAME
+  @feature_values = {
+    acousticness: params['acousticness'],
+    danceability: params['danceability'],
+    energy: params['energy'],
+    instrumentalness: params['instrumentalness'],
+    liveness: params['liveness'],
+    speechiness: params['speechiness'],
+    valence: params['valence']
+  }
+  @seed_track_ids = params['track_ids'] || []
+  @seed_artist_ids = params['artist_ids'] || []
+
+  trackset = SpotifyTrackset.new(@user, logger: logger)
+  @recommendations = trackset.recommendations(
+    target_features: @feature_values, track_ids: @seed_track_ids,
+    artist_ids: @seed_artist_ids
+  )
+
+  @feature_labels = SpotifyAudioFeatures::FEATURE_LABELS
+  @features = @feature_labels.keys
+
+  erb :recommendations, layout: false
 end
 
 # Create a playlist as the authenticated user.

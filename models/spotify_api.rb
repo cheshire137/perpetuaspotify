@@ -35,12 +35,17 @@ class SpotifyApi < Fetcher
     if track_ids.size > 0
       params[:seed_tracks] = track_ids.join(',')
     end
+
     if artist_ids.size > 0
       params[:seed_artists] = artist_ids.join(',')
     end
+
     target_features.each do |feature, value|
-      params["target_#{feature}"] = value
+      if value
+        params["target_#{feature}"] = value
+      end
     end
+
     param_str = params.map { |key, value| "#{key}=#{value}" }.join('&')
 
     json = get("/recommendations?#{param_str}")

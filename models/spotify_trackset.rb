@@ -33,17 +33,21 @@ class SpotifyTrackset
     @audio_features ||= get_target_features
   end
 
-  def recommendations(limit: 24)
-    @recommendations ||= begin
-      max_seeds = 5
-      artist_ids = get_seed_artist_ids
+  def seed_artist_ids
+    @seed_artist_ids ||= get_seed_artist_ids
+  end
 
-      @api.get_recommendations(
-        limit: limit, track_ids: get_seed_track_ids(max_seeds - artist_ids.size),
-        target_features: audio_features,
-        artist_ids: artist_ids
-      )
-    end
+  def seed_track_ids
+    max_seeds = 5
+    @seed_track_ids ||= get_seed_track_ids(max_seeds - seed_artist_ids.size)
+  end
+
+  def recommendations(limit: 24, target_features: nil, artist_ids: nil, track_ids: nil)
+    @recommendations ||= @api.get_recommendations(
+      limit: limit, track_ids: track_ids || seed_track_ids,
+      target_features: target_features || audio_features,
+      artist_ids: artist_ids || seed_artist_ids
+    ) || []
   end
 
   private

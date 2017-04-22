@@ -6,6 +6,16 @@ class SpotifyAudioFeatures
     :loudness, :mode, :speechiness, :tempo, :valence, :track_id,
     :time_signature, :duration_ms, :liveness
 
+  FEATURE_LABELS = {
+    acousticness: "Acoustic",
+    danceability: "Danceable",
+    energy: "Energy",
+    instrumentalness: "Instrumental",
+    liveness: "Liveness",
+    speechiness: "Speechy",
+    valence: "Valence"
+  }.freeze
+
   def initialize(hash)
     @track_id = hash['id']
     @acousticness = hash['acousticness']

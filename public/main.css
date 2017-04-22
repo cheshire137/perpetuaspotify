@@ -278,6 +278,10 @@ input[type="range"]:focus::-ms-fill-upper {
   background: #6EDBCA;
 }
 
+.content p.modal-card-title {
+  margin-bottom: 0;
+}
+
 .feature-range-min,
 .feature-range-max {
   font-size: 12px;
