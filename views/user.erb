@@ -43,16 +43,30 @@
         </ul>
         <div class="modal" id="create-playlist-modal">
           <div class="modal-background"></div>
-          <div class="modal-content">
-            <ol>
-              <% @recommendations.each do |track| %>
-                <li>
-                  <%= erb :track, locals: { track: track } %>
-                </li>
-              <% end %>
-            </ol>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">Create Playlist</p>
+              <button class="modal-close js-modal-close"></button>
+            </header>
+            <form>
+              <section class="modal-card-body">
+                <div class="field">
+                  <label class="label" for="playlist-name">Playlist name</label>
+                  <p class="control">
+                    <input autofocus value="<%= @playlist_name %>" class="input js-playlist-name-input js-modal-focus" type="text" id="playlist-name">
+                  </p>
+                </div>
+              </section>
+              <footer class="modal-card-foot">
+                <button class="button" type="submit">
+                  Save
+                </button>
+                <button class="button is-link js-modal-close" type="button">
+                  Cancel
+                </button>
+              </footer>
+            </form>
           </div>
-          <button class="modal-close"></button>
         </div>
       </div>
     </div>

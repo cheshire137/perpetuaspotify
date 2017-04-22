@@ -71,6 +71,7 @@ get '/user/:id-:user_name' do
   end
 
   @recommendations = trackset.recommendations
+  @playlist_name = trackset.playlist_name
 
   erb :user
 end

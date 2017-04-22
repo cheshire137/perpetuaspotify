@@ -26,6 +26,10 @@ class SpotifyTrack
     @artist_count ||= artists.size
   end
 
+  def artist_names
+    artists.map(&:name).join(', ')
+  end
+
   def formatted_played_at
     if played_at
       played_at.strftime('%b %-d, %Y %l:%M %P')
