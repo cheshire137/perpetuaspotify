@@ -2,10 +2,36 @@
 
 ## How to Develop
 
+Create [a Spotify application](https://developer.spotify.com/my-applications).
+Set `http://localhost:9292/callback/spotify` as a redirect URI.
+
 ```bash
 bundle install
+cp dotenv.sample .env
+```
+
+Modify .env to set environment variables, such as your Spotify client
+ID and secret. Run `rake generate:secret` to generate `SESSION_SECRET`.
+
+```bash
 rake db:create
 rake db:migrate
 rackup
 open http://localhost:9292
+```
+
+## How to Deploy to Heroku
+
+Create [an app on Heroku](https://dashboard.heroku.com/apps). Set
+`https://your-heroku-app.herokuapp.com/callback/spotify` as a redirect
+URI in your Spotify app.
+
+```bash
+heroku git:remote -a your-heroku-app
+git push heroku master
+heroku config:set SPOTIFY_CLIENT_ID=
+heroku config:set SPOTIFY_CLIENT_SECRET=
+heroku config:set SESSION_SECRET=
+heroku run rake db:migrate
+heroku restart
 ```
