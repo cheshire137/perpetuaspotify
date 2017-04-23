@@ -7,15 +7,15 @@ class SpotifyTrackset
     @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
   end
 
-  def tracks
+  def tracks(before_time: nil)
     return @tracks if defined? @tracks
 
     tracks = begin
-      @api.get_recently_played
+      @api.get_recently_played(before_time: before_time)
     rescue Fetcher::Unauthorized
       if @user.update_spotify_tokens
         @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
-        @api.get_recently_played
+        @api.get_recently_played(before_time: before_time)
       else
         raise Error, 'Failed to get recent Spotify tracks.'
       end
@@ -27,6 +27,18 @@ class SpotifyTrackset
     end
 
     @tracks = tracks
+  end
+
+  def artist_names_by_id
+    result = {}
+
+    tracks.each do |track|
+      track.artists.each do |artist|
+        result[artist.id] = artist.name
+      end
+    end
+
+    result.sort_by { |id, name| name.downcase }.to_h
   end
 
   def audio_features

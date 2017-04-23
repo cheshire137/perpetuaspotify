@@ -96,6 +96,10 @@ get '/user/:id-:user_name' do
   @feature_values = trackset.audio_features
   @seed_artist_ids = trackset.seed_artist_ids
   @seed_track_ids = trackset.seed_track_ids
+  @artist_names_by_id = trackset.artist_names_by_id
+
+  # Unix time in milliseconds:
+  @before_time = (Time.now.to_f * 1_000).to_i
 
   @error = session[:error]
   session[:error] = nil
@@ -133,8 +137,18 @@ post '/recommendations' do
   }
   @seed_track_ids = params['track_ids'] || []
   @seed_artist_ids = params['artist_ids'] || []
+  @before_time = params['before_time']
 
   trackset = SpotifyTrackset.new(@user, logger: logger)
+
+  @tracks = begin
+    trackset.tracks
+  rescue SpotifyTrackset::Error
+    status 400
+    return 'Failed to get recent Spotify tracks.'
+  end
+
+  @artist_names_by_id = trackset.artist_names_by_id
   @recommendations = trackset.recommendations(
     target_features: @feature_values, track_ids: @seed_track_ids,
     artist_ids: @seed_artist_ids

@@ -104,7 +104,8 @@ body {
   padding-right: 2em;
 }
 
-.modal .modal-card-body {
+.modal .modal-card-body:not(.has-tabs),
+.modal .modal-card-body.has-tabs .tab.is-active {
   overflow: auto;
 }
 
@@ -302,4 +303,38 @@ input[type="range"]:focus::-ms-fill-upper {
 .button .fa {
   font-size: inherit;
   margin-right: 5px;
+}
+
+@media screen and (min-width: 769px) {
+  .control-label {
+    padding-top: 0;
+  }
+}
+
+.tab {
+  display: none;
+}
+
+.tab.is-active {
+  display: block;
+}
+
+.modal-card-body.has-tabs {
+  padding: 0;
+}
+
+.modal-card-body.has-tabs .tab.is-active {
+  padding: 20px;
+}
+
+.modal-card-body.has-tabs .tabs {
+  margin-bottom: 0;
+}
+
+.content .modal-card-body.has-tabs .tabs ul {
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 20px;
+  padding-right: 20px;
 }

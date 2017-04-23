@@ -9,8 +9,10 @@ class SpotifyApi < Fetcher
   end
 
   # https://developer.spotify.com/web-api/web-api-personalization-endpoints/get-recently-played/
-  def get_recently_played(limit: 24)
-    json = get("/me/player/recently-played?limit=#{limit}")
+  def get_recently_played(before_time: nil, limit: 24)
+    url = "/me/player/recently-played?limit=#{limit}"
+    url += "&before=#{before_time}" if before_time
+    json = get(url)
 
     return unless json
 

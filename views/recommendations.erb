@@ -80,34 +80,66 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        Adjust Recommendations
+        Song Recommendations
       </p>
       <button class="modal-close js-modal-close"></button>
     </header>
     <form class="js-remote-form" data-target-id="recommendations-container" action="/recommendations" method="POST">
-      <% @seed_track_ids.each do |track_id| %>
-        <input type="hidden" name="track_ids[]" value="<%= track_id %>">
-      <% end %>
-      <% @seed_artist_ids.each do |artist_id| %>
-        <input type="hidden" name="artist_ids[]" value="<%= artist_id %>">
-      <% end %>
-      <section class="modal-card-body">
-        <p>
-          Adjust these audio features to change which songs
-          are recommended:
-        </p>
-        <% @features.each do |feature| %>
-          <div class="control is-horizontal">
-            <div class="control-label">
-              <label class="label" for="<%= feature %>"><%= @feature_labels[feature] %></label>
+      <input type="hidden" name="before_time" value="<%= @before_time %>">
+      <section class="modal-card-body has-tabs">
+        <div class="tabs">
+          <ul>
+            <li class="is-active"><a class="js-switch-tab" href="#seeds-tab">Seeds</a></li>
+            <li><a class="js-switch-tab" href="#audio-features-tab">Audio features</a></li>
+          </ul>
+        </div>
+        <div class="tab is-active" id="seeds-tab">
+          <p>Find songs like these (choose up to 5):</p>
+          <div class="columns">
+            <div class="column">
+              <ul>
+                <li><strong>Artists:</strong></li>
+                <% @artist_names_by_id.each do |artist_id, artist_name| %>
+                  <li>
+                    <label class="checkbox" for="seed-artist-<%= artist_id %>">
+                      <input id="seed-artist-<%= artist_id %>" <% if @seed_artist_ids.include?(artist_id) %>checked<% end %> type="checkbox" value="<%= artist_id %>" name="artist_ids[]">&nbsp;<%= artist_name %>
+                    </label>
+                  </li>
+                <% end %>
+              </ul>
             </div>
-            <div class="control">
-              <span class="feature-range-min">0%</span>
-              <input name="<%= feature %>" id="<%= feature %>" value="<%= @feature_values[feature] %>" type="range" min="0" max="1" step="0.05" class="slider">
-              <span class="feature-range-max">100%</span>
+            <div class="column is-two-thirds">
+              <ul>
+                <li><strong>Songs:</strong></li>
+                <% @tracks.each do |track| %>
+                  <li>
+                    <label class="checkbox" for="seed-track-<%= track.id %>">
+                      <input id="seed-track-<%= track.id %>" <% if @seed_track_ids.include?(track.id) %>checked<% end %> type="checkbox" value="<%= track.id %>" name="track_ids[]">&nbsp;<%= track.name %> by <%= track.artist_names %>
+                    </label>
+                  </li>
+                <% end %>
+              </ul>
             </div>
           </div>
-        <% end %>
+        </div>
+        <div class="tab" id="audio-features-tab">
+          <p>
+            Adjust these audio features to change which songs
+            are recommended:
+          </p>
+          <% @features.each do |feature| %>
+            <div class="control is-horizontal">
+              <div class="control-label">
+                <label class="label" for="<%= feature %>"><%= @feature_labels[feature] %></label>
+              </div>
+              <div class="control">
+                <span class="feature-range-min">0%</span>
+                <input name="<%= feature %>" id="<%= feature %>" value="<%= @feature_values[feature] %>" type="range" min="0" max="1" step="0.05" class="slider">
+                <span class="feature-range-max">100%</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </section>
       <footer class="modal-card-foot">
         <button class="button is-primary" type="submit">

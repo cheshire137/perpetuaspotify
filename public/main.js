@@ -6,14 +6,23 @@ function resizeOpenModal() {
 
   const modalBody = openModal.querySelector('.modal-card-body')
   if (modalBody) {
-    const rect = modalBody.getBoundingClientRect()
-    let height = window.innerHeight - rect.top - 20
+    const padding = 20
+    let height = window.innerHeight - padding
     const modalFoot = openModal.querySelector('.modal-card-foot')
     if (modalFoot) {
       const footRect = modalFoot.getBoundingClientRect()
       height -= footRect.height
     }
-    modalBody.style.maxHeight = `${height}px`
+    if (modalBody.classList.contains('has-tabs')) {
+      const activeTab = modalBody.querySelector('.tab.is-active')
+      const rect = activeTab.getBoundingClientRect()
+      height -= rect.top
+      activeTab.style.maxHeight = `${height}px`
+    } else {
+      const rect = modalBody.getBoundingClientRect()
+      height -= rect.top
+      modalBody.style.maxHeight = `${height}px`
+    }
   }
 }
 
@@ -103,6 +112,53 @@ function toggleSubmitButton(button, disabled) {
   button.classList.toggle('is-loading', disabled)
 }
 
+function setUpSubmitButtons(container) {
+  const buttons = container.querySelectorAll('form .js-submit-button')
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function(event) {
+      toggleSubmitButton(event.currentTarget, true)
+    })
+  }
+}
+
+function resizeModalOnWindowResize() {
+  if (!document.querySelector('.modal')) {
+    return
+  }
+  window.addEventListener('resize', resizeOpenModal)
+}
+
+function switchTab(event) {
+  event.preventDefault()
+  const link = event.currentTarget
+  const li = link.closest('li')
+  const tabList = li.closest('.tabs')
+  const activeLi = tabList.querySelector('li.is-active')
+  if (activeLi) {
+    activeLi.classList.remove('is-active')
+  }
+  li.classList.add('is-active')
+
+  const tab = document.querySelector(link.getAttribute('href'))
+
+  if (tab) {
+    const activeTab = tab.parentNode.querySelector('.tab.is-active')
+    if (activeTab) {
+      activeTab.classList.remove('is-active')
+    }
+    tab.classList.add('is-active')
+  }
+
+  resizeOpenModal()
+}
+
+function setUpTabs(container) {
+  const tabLinks = container.querySelectorAll('.js-switch-tab')
+  for (let i = 0; i < tabLinks.length; i++) {
+    tabLinks[i].addEventListener('click', switchTab)
+  }
+}
+
 function onRemoteFormSubmit(event) {
   event.preventDefault()
 
@@ -125,6 +181,7 @@ function onRemoteFormSubmit(event) {
       setUpRemoteForms(target)
       setUpTrackInfo(target)
       setUpSubmitButtons(target)
+      setUpTabs(target)
     } else {
       console.error(req.status, req.statusText)
     }
@@ -140,22 +197,6 @@ function setUpRemoteForms(container) {
   }
 }
 
-function setUpSubmitButtons(container) {
-  const buttons = container.querySelectorAll('form .js-submit-button')
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', function(event) {
-      toggleSubmitButton(event.currentTarget, true)
-    })
-  }
-}
-
-function resizeModalOnWindowResize() {
-  if (!document.querySelector('.modal')) {
-    return
-  }
-  window.addEventListener('resize', resizeOpenModal)
-}
-
 closeModalOnEscape()
 resizeModalOnWindowResize()
 setUpNotificationDismissals()
@@ -164,3 +205,4 @@ setUpModals(document)
 setUpTrackInfo(document)
 setUpRemoteForms(document)
 setUpSubmitButtons(document)
+setUpTabs(document)
