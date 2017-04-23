@@ -1,5 +1,13 @@
 # Perpetuaspotify
 
+View the songs you've listened to most recently on Spotify. From those
+songs, a list of recommended songs is generated. You can fiddle with
+how those recommendations are generated to tweak the results. Then,
+create a playlist of those recommended songs. Listen to that playlist
+and do the whole process over again.
+
+![Screenshot of app](https://raw.githubusercontent.com/cheshire137/perpetuaspotify/master/screenshot.png)
+
 ## How to Develop
 
 Create [a Spotify application](https://developer.spotify.com/my-applications).
