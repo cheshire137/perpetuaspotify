@@ -119,8 +119,7 @@
                   <% is_checked = @seed_track_ids.include?(track.id) %>
                   <li>
                     <label class="checkbox" for="seed-track-<%= track.id %>">
-                      <input <% if @seeds_remaining < 1 && !is_checked %>disabled<% end %> class="js-seed-checkbox" id="seed-track-<%= track.id %>" <% if is_checked %>checked<% end %> type="checkbox" value="<%= track.id %>" name="track_ids[]">&nbsp;<%= track.name %><br>
-                      by <%= track.artist_names %>
+                      <input <% if @seeds_remaining < 1 && !is_checked %>disabled<% end %> class="js-seed-checkbox" id="seed-track-<%= track.id %>" <% if is_checked %>checked<% end %> type="checkbox" value="<%= track.id %>" name="track_ids[]">&nbsp;<%= track.name %> by <%= track.artist_names %>
                     </label>
                   </li>
                 <% end %>

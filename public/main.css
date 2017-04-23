@@ -341,6 +341,14 @@ input[type="range"]:focus::-ms-fill-upper {
 
 .content ul.seeds-list {
   list-style: none;
+  margin-top: 0;
   margin-left: 0;
   margin-right: 0;
+}
+
+@media screen and (min-width: 1000px) {
+  .modal-card,
+  .modal-content {
+    width: 800px;
+  }
 }
