@@ -10,6 +10,10 @@ development:
   <<: *default
   database: perpetuaspotify_development
 
+test:
+  <<: *default
+  database: perpetuaspotify_test
+
 production:
   <<: *default
   database: db/production
