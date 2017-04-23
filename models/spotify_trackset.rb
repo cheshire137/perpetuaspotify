@@ -1,6 +1,8 @@
 class SpotifyTrackset
   class Error < StandardError; end
 
+  MAX_SEEDS = 5
+
   def initialize(user, logger:)
     @user = user
     @logger = logger
@@ -50,8 +52,7 @@ class SpotifyTrackset
   end
 
   def seed_track_ids
-    max_seeds = 5
-    @seed_track_ids ||= get_seed_track_ids(max_seeds - seed_artist_ids.size)
+    @seed_track_ids ||= get_seed_track_ids(MAX_SEEDS - seed_artist_ids.size)
   end
 
   def recommendations(limit: 24, target_features: nil, artist_ids: nil, track_ids: nil)

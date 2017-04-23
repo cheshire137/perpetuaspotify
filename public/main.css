@@ -338,3 +338,9 @@ input[type="range"]:focus::-ms-fill-upper {
   padding-left: 20px;
   padding-right: 20px;
 }
+
+.content ul.seeds-list {
+  list-style: none;
+  margin-left: 0;
+  margin-right: 0;
+}

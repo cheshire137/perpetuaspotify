@@ -182,6 +182,7 @@ function onRemoteFormSubmit(event) {
       setUpTrackInfo(target)
       setUpSubmitButtons(target)
       setUpTabs(target)
+      setUpSeedCountRemaining(target)
     } else {
       console.error(req.status, req.statusText)
     }
@@ -197,6 +198,33 @@ function setUpRemoteForms(container) {
   }
 }
 
+function onSeedChange(container, event) {
+  const remainingEl = container.querySelector('.js-seed-count-remaining')
+  const maxCount = parseInt(remainingEl.getAttribute('data-max'), 10)
+  const seedCheckboxes = container.querySelectorAll('.js-seed-checkbox')
+  const selectedCount = container.querySelectorAll('.js-seed-checkbox:checked').length
+
+  const remainingCount = maxCount - selectedCount
+  const suffix = remainingEl.getAttribute('data-suffix')
+  remainingEl.textContent = `${remainingCount} ${suffix}`
+
+  const shouldDisable = remainingCount <= 0
+  for (let i = 0; i < seedCheckboxes.length; i++) {
+    const checkbox = seedCheckboxes[i]
+    checkbox.disabled = shouldDisable && !checkbox.checked
+  }
+}
+
+function setUpSeedCountRemaining(container) {
+  const seedCheckboxes = container.querySelectorAll('.js-seed-checkbox')
+  for (let i = 0; i < seedCheckboxes.length; i++) {
+    const checkbox = seedCheckboxes[i]
+    checkbox.addEventListener('change', function(event) {
+      onSeedChange(container, event)
+    })
+  }
+}
+
 closeModalOnEscape()
 resizeModalOnWindowResize()
 setUpNotificationDismissals()
@@ -206,3 +234,4 @@ setUpTrackInfo(document)
 setUpRemoteForms(document)
 setUpSubmitButtons(document)
 setUpTabs(document)
+setUpSeedCountRemaining(document)

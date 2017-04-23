@@ -97,6 +97,8 @@ get '/user/:id-:user_name' do
   @seed_artist_ids = trackset.seed_artist_ids
   @seed_track_ids = trackset.seed_track_ids
   @artist_names_by_id = trackset.artist_names_by_id
+  @max_seeds = SpotifyTrackset::MAX_SEEDS
+  @seeds_remaining = @max_seeds - (@seed_track_ids.size +  @seed_artist_ids.size)
 
   # Unix time in milliseconds:
   @before_time = (Time.now.to_f * 1_000).to_i
@@ -138,6 +140,8 @@ post '/recommendations' do
   @seed_track_ids = params['track_ids'] || []
   @seed_artist_ids = params['artist_ids'] || []
   @before_time = params['before_time']
+  @max_seeds = SpotifyTrackset::MAX_SEEDS
+  @seeds_remaining = @max_seeds - (@seed_track_ids.size +  @seed_artist_ids.size)
 
   trackset = SpotifyTrackset.new(@user, logger: logger)
 
