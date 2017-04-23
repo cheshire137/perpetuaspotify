@@ -115,7 +115,7 @@
             <div class="column is-7">
               <ul class="seeds-list">
                 <li><strong>Songs:</strong></li>
-                <% @tracks.each do |track| %>
+                <% @tracks.sort_by { |t| t.name.downcase }.uniq(&:id).each do |track| %>
                   <% is_checked = @seed_track_ids.include?(track.id) %>
                   <li>
                     <label class="checkbox" for="seed-track-<%= track.id %>">
