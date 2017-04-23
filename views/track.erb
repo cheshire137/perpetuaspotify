@@ -1,15 +1,23 @@
 <div class="js-track-info-container">
   <article class="media">
-    <% if track.image_url %>
+    <% if big_image && track.big_image_url %>
       <div class="media-left track-image-container">
         <figure class="image">
           <button class="button is-image js-track-info-toggle" type="button">
-            <img src="<%= track.image_url %>" alt="" width="<%= track.image_width %>" height="<%= track.image_height %>">
+            <img class="big-track-image" src="<%= track.big_image_url %>" alt="" width="<%= track.big_image_width %>" height="<%= track.big_image_height %>">
+          </button>
+        </figure>
+      </div>
+    <% elsif !big_image && track.small_image_url %>
+      <div class="media-left track-image-container">
+        <figure class="image">
+          <button class="button is-image js-track-info-toggle" type="button">
+            <img class="small-track-image" src="<%= track.small_image_url %>" alt="" width="<%= track.small_image_width %>" height="<%= track.small_image_height %>">
           </button>
         </figure>
       </div>
     <% end %>
-    <div class="media-content content track-info js-track-info">
+    <div class="<%= 'big-track-info' if big_image %> media-content content track-info js-track-info">
       <strong class="track-name">
         <a href="<%= track.url %>" target="_blank" rel="noopener noreferrer"><%= track.name %></a>
       </strong>

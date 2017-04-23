@@ -1,8 +1,9 @@
 require_relative 'spotify_artist'
 
 class SpotifyTrack
-  attr_reader :name, :artists, :url, :played_at, :id, :image_url,
-    :image_width, :image_height, :uri
+  attr_reader :name, :artists, :url, :played_at, :id, :small_image_url,
+    :small_image_width, :small_image_height, :uri, :big_image_url,
+    :big_image_width, :big_image_height
   attr_accessor :audio_features
 
   def initialize(hash)
@@ -17,9 +18,16 @@ class SpotifyTrack
 
     image = hash['album']['images'].detect { |img| img['width'] <= 75 }
     if image
-      @image_url = image['url']
-      @image_width = image['width']
-      @image_height = image['height']
+      @small_image_url = image['url']
+      @small_image_width = image['width']
+      @small_image_height = image['height']
+    end
+
+    image = hash['album']['images'].detect { |img| img['width'] <= 300 }
+    if image
+      @big_image_url = image['url']
+      @big_image_width = image['width']
+      @big_image_height = image['height']
     end
   end
 

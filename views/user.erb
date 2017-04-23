@@ -1,4 +1,4 @@
-<section class="hero is-primary">
+<section class="hero is-warning">
   <div class="hero-body">
     <div class="container">
       <nav class="nav">
@@ -42,16 +42,16 @@
     <% end %>
     <div class="content">
       <div class="columns">
-        <div class="column">
+        <div class="column is-5">
           <h2 class="subtitle">Recently Played</h2>
           <p>This is what you&rsquo;ve been listening to on Spotify:</p>
           <ul class="recently-played-list tracks-list">
             <% @tracks.each do |track| %>
-              <li><%= erb :track, locals: { track: track } %></li>
+              <li><%= erb :track, locals: { track: track, big_image: false } %></li>
             <% end %>
           </ul>
         </div>
-        <div class="column" id="recommendations-container">
+        <div class="column is-7" id="recommendations-container">
           <%= erb :recommendations %>
         </div>
       </div>
