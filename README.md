@@ -28,6 +28,13 @@ rackup
 open http://localhost:9292
 ```
 
+## How to Test
+
+```bash
+RAILS_ENV=test rake db:create db:migrate
+bundle exec rspec
+```
+
 ## How to Deploy to Heroku
 
 Create [an app on Heroku](https://dashboard.heroku.com/apps). Set
@@ -37,9 +44,9 @@ URI in your Spotify app.
 ```bash
 heroku git:remote -a your-heroku-app
 git push heroku master
-heroku config:set SPOTIFY_CLIENT_ID=
-heroku config:set SPOTIFY_CLIENT_SECRET=
-heroku config:set SESSION_SECRET=
+heroku config:set SPOTIFY_CLIENT_ID=value_here
+heroku config:set SPOTIFY_CLIENT_SECRET=value_here
+heroku config:set SESSION_SECRET=value_here
 heroku run rake db:migrate
 heroku restart
 ```
