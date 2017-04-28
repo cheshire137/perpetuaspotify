@@ -61,6 +61,7 @@ class Fetcher
     elsif res.code == '401'
       raise Unauthorized, res.message
     else
+      @logger.error "Request URL: #{uri}"
       @logger.error res.body
       nil
     end

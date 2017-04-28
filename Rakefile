@@ -19,7 +19,7 @@ namespace :spotify do
       next
     end
 
-    if user.update_spotify_tokens
+    if user.update_spotify_tokens(logger: STDOUT)
       puts "#{user.user_name}'s access token:"
       puts user.spotify_access_token
     else

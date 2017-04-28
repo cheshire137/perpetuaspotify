@@ -200,7 +200,8 @@ get '/callback/spotify' do
   redirect_uri = escape_url("#{request.base_url}/callback/spotify")
 
   spotify_auth_api = SpotifyAuthApi.new(ENV['SPOTIFY_CLIENT_ID'],
-                                        ENV['SPOTIFY_CLIENT_SECRET'])
+                                        ENV['SPOTIFY_CLIENT_SECRET'],
+                                        logger: logger)
   tokens = spotify_auth_api.get_tokens(code, redirect_uri)
 
   if tokens

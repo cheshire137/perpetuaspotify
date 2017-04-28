@@ -2,9 +2,10 @@ require 'base64'
 require 'net/http'
 
 class SpotifyAuthApi
-  def initialize(client_id, client_secret)
+  def initialize(client_id, client_secret, logger:)
     @client_id = client_id
     @client_secret = client_secret
+    @logger = logger
   end
 
   def refresh_tokens(refresh_token)
@@ -24,6 +25,10 @@ class SpotifyAuthApi
     if res.kind_of? Net::HTTPSuccess
       json = JSON.parse(res.body)
       json.slice('access_token', 'refresh_token')
+    else
+      @logger.error "POST #{uri}"
+      @logger.error res.body
+      nil
     end
   end
 
@@ -44,6 +49,10 @@ class SpotifyAuthApi
     if res.kind_of? Net::HTTPSuccess
       json = JSON.parse(res.body)
       json.slice('access_token', 'refresh_token')
+    else
+      @logger.error "POST #{uri}"
+      @logger.error res.body
+      nil
     end
   end
 end

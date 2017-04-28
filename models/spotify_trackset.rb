@@ -15,7 +15,7 @@ class SpotifyTrackset
     tracks = begin
       @api.get_recently_played(before_time: before_time)
     rescue Fetcher::Unauthorized
-      if @user.update_spotify_tokens
+      if @user.update_spotify_tokens(logger: @logger)
         @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
         @api.get_recently_played(before_time: before_time)
       else

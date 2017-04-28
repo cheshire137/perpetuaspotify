@@ -29,7 +29,7 @@ class PlaylistManager
 
     @api.replace_playlist(playlist_args)
   rescue Fetcher::Unauthorized
-    if @user.update_spotify_tokens
+    if @user.update_spotify_tokens(logger: @logger)
       @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
       @api.replace_playlist(playlist_args)
     end
@@ -41,7 +41,7 @@ class PlaylistManager
 
     @api.create_playlist(playlist_args)
   rescue Fetcher::Unauthorized
-    if @user.update_spotify_tokens
+    if @user.update_spotify_tokens(logger: @logger)
       @api = SpotifyApi.new(@user.spotify_access_token, logger: @logger)
       @api.create_playlist(playlist_args)
     end
