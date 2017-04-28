@@ -51,6 +51,7 @@ class SpotifyAuthApi
       json.slice('access_token', 'refresh_token')
     else
       @logger.error "POST #{uri}"
+      @logger.error "Using redirect_uri: #{redirect_uri}"
       @logger.error res.body
       nil
     end
